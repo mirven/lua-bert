@@ -1,5 +1,6 @@
 require 'types'
 require 'sym'
+require 'tuple'
 
 Encode = {}
 Encode.__index = Encode
@@ -21,6 +22,10 @@ function Encode:write_any_raw(obj)
 	local obj_type = type(obj)
 	if obj_type == "string" then
 		self:write_string(obj)
+	elseif is_tuple(obj) then
+		self:write_tuple(obj)
+	elseif is_symbol(obj) then
+		self:write_symbol(obj)
 	end
 end
 
@@ -38,12 +43,13 @@ function Encode:write_float(fload)
 end
 
 function Encode:write_boolean(bool)
+	self:write_symbol(sym(tostring(bool)))
 end
 
 function Encode:write_symbol(sym)
-	self.write_1(Types.ATOM)
-	self.write_2(#sym.name)
-	self.write_string(symname)
+	self:write_1(Types.ATOM)
+	self:write_2(sym.name:len())
+	self:write_string(sym.name)
 end
 
 function Encode:write_string(str)
@@ -99,3 +105,11 @@ end)();
 	e:write_string("abc")
 	assert(e:str() == "abc")
 end)();
+
+(function()
+	local e = Encode:new()
+	e:write_symbol(sym("abc"))
+	print(e:str())
+	-- assert(e:str() == "abc")
+end)();
+

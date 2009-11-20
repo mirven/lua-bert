@@ -24,4 +24,3 @@ Types = {
 -- print(Types.MAX_INT)
 -- print(Types.MIN_INT)
 
-print(2^27)
