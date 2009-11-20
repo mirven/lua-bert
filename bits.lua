@@ -5,7 +5,7 @@ local function check_int(n)
 	end
 end
 
-local function to_bits(n)
+function to_bits(n)
 	check_int(n)
 	-- if n < 0 then
 	-- 	-- negative

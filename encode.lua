@@ -1,6 +1,7 @@
 require 'types'
 require 'sym'
 require 'tuple'
+require 'bits'
 
 Encode = {}
 Encode.__index = Encode
@@ -21,7 +22,7 @@ end
 function Encode:write_any_raw(obj)
 	local obj_type = type(obj)
 	if obj_type == "string" then
-		self:write_string(obj)
+		self:write_binary(obj)
 	elseif is_tuple(obj) then
 		self:write_tuple(obj)
 	elseif is_symbol(obj) then
@@ -34,9 +35,19 @@ function Encode:write_1(byte)
 end
 
 function Encode:write_2(short)
+	local bits = to_bits(short)
+	local b = bytes(2, bits)
+	for i=1,2 do
+		self:write_1(b[i])
+	end
 end
 
 function Encode:write_4(long)
+	local bits = to_bits(long)
+	local b = bytes(4, bits)
+	for i=1,4 do
+		self:write_1(b[i])
+	end
 end
 
 function Encode:write_float(fload)
@@ -47,12 +58,14 @@ function Encode:write_boolean(bool)
 end
 
 function Encode:write_symbol(sym)
+	print "symbol"
 	self:write_1(Types.ATOM)
 	self:write_2(sym.name:len())
 	self:write_string(sym.name)
 end
 
 function Encode:write_string(str)
+	print(str)
 	local bytes = { str:byte(1, str:len()) }
 	for _, b in ipairs(bytes) do
 		table.insert(self.out, b)
@@ -86,30 +99,40 @@ function Encode:write_list(data)
 	end
 end
 
-(function()
-	local e = Encode:new()
-	e:write_1(65)
-	assert(e:str() == "A")
-end)();
+function Encode:write_binary(data)
+	self:write_1(Types.BIN)
+	self:write_4(data:len())
+	self:write_string(data)
+end
 
-(function()
-	local e = Encode:new()
-	e:write_1(65)
-	e:write_1(66)
-	e:write_1(67)
-	assert(e:str() == "ABC")
-end)();
-
-(function()
-	local e = Encode:new()
-	e:write_string("abc")
-	assert(e:str() == "abc")
-end)();
-
-(function()
-	local e = Encode:new()
-	e:write_symbol(sym("abc"))
-	print(e:str())
-	-- assert(e:str() == "abc")
-end)();
-
+-- (function()
+-- 	local e = Encode:new()
+-- 	e:write_1(65)
+-- 	assert(e:str() == "A")
+-- end)();
+-- 
+-- (function()
+-- 	local e = Encode:new()
+-- 	e:write_1(65)
+-- 	e:write_1(66)
+-- 	e:write_1(67)
+-- 	assert(e:str() == "ABC")
+-- end)();
+-- 
+-- (function()
+-- 	local e = Encode:new()
+-- 	e:write_string("abc")
+-- 	assert(e:str() == "abc")
+-- end)();
+-- 
+-- (function()
+-- 	local e = Encode:new()
+-- 	e:write_symbol(sym("abc"))
+-- 	-- print(e:str())
+-- 	-- assert(e:str() == "abc")
+-- end)();
+-- 
+-- -- local e = Encode:new()
+-- -- e:write_1(Types.MAGIC)
+-- -- print(e:str())
+-- -- 
