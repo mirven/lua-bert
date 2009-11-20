@@ -1,4 +1,5 @@
 require 'types'
+require 'sym'
 
 Encode = {}
 Encode.__index = Encode
@@ -33,6 +34,18 @@ end
 function Encode:write_4(long)
 end
 
+function Encode:write_float(fload)
+end
+
+function Encode:write_boolean(bool)
+end
+
+function Encode:write_symbol(sym)
+	self.write_1(Types.ATOM)
+	self.write_2(#sym.name)
+	self.write_string(symname)
+end
+
 function Encode:write_string(str)
 	local bytes = { str:byte(1, str:len()) }
 	for _, b in ipairs(bytes) do
@@ -40,14 +53,41 @@ function Encode:write_string(str)
 	end
 end
 
+function Encode:write_tuple(data)
+	if #data < 256 then
+		self:write_1(Types.SMALL_TUPLE)
+		self.write_1(#data)
+	else
+		self:write_1(Types.LARGE_TUPLE)
+		self.write_4(#data)
+	end
+	
+	for _, d in ipairs(data) do
+		self:write_any_raw(d)
+	end
+end
+
+function Encode:write_list(data)
+	if #data == 0 then
+		self:write_1(Types.NIL)
+	else
+		self:write_1(Types.LIST)
+		self:write_4(#data)
+		for _, d in ipairs(data) do
+			self:write_any_raw(d)
+		end
+		self:write_1(Types.NIL)
+	end
+end
+
 (function()
-	e = Encode:new()
+	local e = Encode:new()
 	e:write_1(65)
 	assert(e:str() == "A")
 end)();
 
 (function()
-	e = Encode:new()
+	local e = Encode:new()
 	e:write_1(65)
 	e:write_1(66)
 	e:write_1(67)
@@ -55,7 +95,7 @@ end)();
 end)();
 
 (function()
-	e = Encode:new()
+	local e = Encode:new()
 	e:write_string("abc")
 	assert(e:str() == "abc")
 end)();
