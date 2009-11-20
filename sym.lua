@@ -20,6 +20,9 @@ s = setmetatable({}, {
 	end
 });
 
+-- should("blah blah bah", function()
+-- end)
+
 (function()
 	assert(type(sym("foo")) == "table")
 	assert(sym("foo") == sym("foo"))
