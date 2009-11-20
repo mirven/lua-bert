@@ -29,4 +29,3 @@ arr = encode { foo = "bar "}
 assert(type(arr) == "table")
 assert(type(arr[3]) == "table")
 assert(type(arr[3][1]) == "table")
-

@@ -40,11 +40,22 @@ function Encode:write_string(str)
 	end
 end
 
-e = Encode:new()
-e:write_1(65)
-e:write_1(66)
-e:write_1(67)
-e:write_string("foo")
-e:write_string("foobar")
+(function()
+	e = Encode:new()
+	e:write_1(65)
+	assert(e:str() == "A")
+end)();
 
-print(e:str())
+(function()
+	e = Encode:new()
+	e:write_1(65)
+	e:write_1(66)
+	e:write_1(67)
+	assert(e:str() == "ABC")
+end)();
+
+(function()
+	e = Encode:new()
+	e:write_string("abc")
+	assert(e:str() == "abc")
+end)();
