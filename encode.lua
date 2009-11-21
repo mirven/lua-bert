@@ -21,9 +21,11 @@ end
 
 function Encode:write_any_raw(obj)
 	local obj_type = type(obj)
+	print(is_tuple(obj))
 	if obj_type == "string" then
 		self:write_binary(obj)
 	elseif is_tuple(obj) then
+		print "tuple"
 		self:write_tuple(obj)
 	elseif is_symbol(obj) then
 		self:write_symbol(obj)
@@ -78,10 +80,10 @@ end
 function Encode:write_tuple(data)
 	if #data < 256 then
 		self:write_1(Types.SMALL_TUPLE)
-		self.write_1(#data)
+		self:write_1(#data)
 	else
 		self:write_1(Types.LARGE_TUPLE)
-		self.write_4(#data)
+		self:write_4(#data)
 	end
 	
 	for _, d in ipairs(data) do

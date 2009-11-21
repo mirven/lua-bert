@@ -9,7 +9,7 @@ local function convert_hash(o)
 		tuples[#tuples+1] = t { k, v }
 	end
 
-	return { sym("bert"), sym("dict"), tuples }
+	return t { sym("bert"), sym("dict"), tuples }
 end
 
 local function convert_tuple(o)
@@ -40,7 +40,9 @@ function convert(o)
 		if o[1] then
 			return convert_array(o)
 		else
-			return convert_hash(o)
+			local h = convert_hash(o)
+			print(is_tuple(h))
+			return h
 		end
 	else
 		return o
@@ -50,7 +52,7 @@ end
 function encode(o)
 	local complex = convert(o)
 	local e = Encode:new()
-	e:write_any(o)
+	e:write_any(complex)
 	return e:str()
 end
 
@@ -89,8 +91,12 @@ end
 -- print(encode("foo"))
 
 -- s = encode("foo")
--- s = encode(sym "foo")
-s = encode({'a','b','c', {'f', 'o'}}) -- works!
+s = encode(sym "foo")  --  BERT::Encoder::encode(:foo).unpack 'C*'
+-- s = encode({'a','b','c', {'f', 'o'}}) -- works! -- BERT::Encoder::encode(['a', 'b', 'c', [ 'f', 'o' ]]).unpack 'C*'
+
+-- s = encode(t { 'a', 'b', 'c' })  --  BERT::Encoder::encode(t[ 'a', 'b', 'c' ]).unpack 'C*'
+
+-- s = encode({ key1 = "value1" })  -- BERT::Encoder::encode({ :key1 => "value1" }).unpack 'C*'
 
 bytes = {}
 
