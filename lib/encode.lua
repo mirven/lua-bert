@@ -21,19 +21,19 @@ end
 
 function Encode:write_any_raw(obj)
 	local obj_type = type(obj)
-	print(is_tuple(obj))
 	if obj_type == "string" then
 		self:write_binary(obj)
 	elseif is_tuple(obj) then
-		print "tuple"
 		self:write_tuple(obj)
 	elseif is_symbol(obj) then
 		self:write_symbol(obj)
 	elseif obj_type == "table" then
 		if obj[1] then
 			self:write_list(obj)		
-		else
+		else			
 		end
+	elseif obj_type == "number" then
+		self:write_fixnum(obj)
 	end
 end
 
@@ -109,6 +109,20 @@ function Encode:write_binary(data)
 	self:write_4(data:len())
 	self:write_string(data)
 end
+
+function Encode:write_fixnum(num)
+  if num >= 0 and num < 256 then
+    self:write_1(Types.SMALL_INT)
+    self:write_1(num)
+  -- elsif num <= MAX_INT && num >= MIN_INT
+	else
+    self:write_1(Types.INT)
+    self:write_4(num)
+  -- else
+  --   write_bignum num
+  end
+end
+
 
 -- (function()
 -- 	local e = Encode:new()

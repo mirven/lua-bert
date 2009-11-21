@@ -14,13 +14,9 @@ Types = {
 	FUN = 117,
 	NEW_FUN = 112,
 	MAGIC = 131,
-	MAX_INT = math.mod((1*(2^27)), 256) - 1,
-	MIN_INT = -math.mod((1*(2^27)), 256)
+	-- MAX_INT = math.mod((1*(2^27)), 256) - 1,
+	-- MIN_INT = -math.mod((1*(2^27)), 256)
 	
 	-- MAX_INT = (1 << 27) -1,
 	-- MIN_INT = -(1 << 27)
 }
-
--- print(Types.MAX_INT)
--- print(Types.MIN_INT)
-

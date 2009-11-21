@@ -41,7 +41,6 @@ function convert(o)
 			return convert_array(o)
 		else
 			local h = convert_hash(o)
-			print(is_tuple(h))
 			return h
 		end
 	else
@@ -91,23 +90,23 @@ end
 -- print(encode("foo"))
 
 -- s = encode("foo")
-s = encode(sym "foo")  --  BERT::Encoder::encode(:foo).unpack 'C*'
--- s = encode({'a','b','c', {'f', 'o'}}) -- works! -- BERT::Encoder::encode(['a', 'b', 'c', [ 'f', 'o' ]]).unpack 'C*'
-
--- s = encode(t { 'a', 'b', 'c' })  --  BERT::Encoder::encode(t[ 'a', 'b', 'c' ]).unpack 'C*'
-
--- s = encode({ key1 = "value1" })  -- BERT::Encoder::encode({ :key1 => "value1" }).unpack 'C*'
-
-bytes = {}
-
-for i=1,s:len() do
-	bytes[#bytes+1] = s:byte(i)
-end
-
-print("[ "..table.concat(bytes, ", ").." ]")
-
-
-
-
-
-
+-- -- s = encode(sym "foo")  --  BERT::Encoder::encode(:foo).unpack 'C*'
+-- -- s = encode({'a','b','c', {'f', 'o'}}) -- works! -- BERT::Encoder::encode(['a', 'b', 'c', [ 'f', 'o' ]]).unpack 'C*'
+-- 
+-- -- s = encode(t { 'a', 'b', 'c' })  --  BERT::Encoder::encode(t[ 'a', 'b', 'c' ]).unpack 'C*'
+-- 
+-- -- s = encode({ key1 = "value1" })  -- BERT::Encoder::encode({ :key1 => "value1" }).unpack 'C*'
+-- 
+-- bytes = {}
+-- 
+-- for i=1,s:len() do
+-- 	bytes[#bytes+1] = s:byte(i)
+-- end
+-- 
+-- print("[ "..table.concat(bytes, ", ").." ]")
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 

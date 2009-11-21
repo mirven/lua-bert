@@ -1,5 +1,4 @@
 require 'luaspec'
-require 'luamock'
 
 require 'convert'
 
