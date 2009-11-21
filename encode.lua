@@ -27,6 +27,11 @@ function Encode:write_any_raw(obj)
 		self:write_tuple(obj)
 	elseif is_symbol(obj) then
 		self:write_symbol(obj)
+	elseif obj_type == "table" then
+		if obj[1] then
+			self:write_list(obj)		
+		else
+		end
 	end
 end
 
@@ -50,7 +55,7 @@ function Encode:write_4(long)
 	end
 end
 
-function Encode:write_float(fload)
+function Encode:write_float(float)
 end
 
 function Encode:write_boolean(bool)
@@ -58,14 +63,12 @@ function Encode:write_boolean(bool)
 end
 
 function Encode:write_symbol(sym)
-	print "symbol"
 	self:write_1(Types.ATOM)
 	self:write_2(sym.name:len())
 	self:write_string(sym.name)
 end
 
 function Encode:write_string(str)
-	print(str)
 	local bytes = { str:byte(1, str:len()) }
 	for _, b in ipairs(bytes) do
 		table.insert(self.out, b)

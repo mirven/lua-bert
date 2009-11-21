@@ -90,11 +90,17 @@ end
 
 -- s = encode("foo")
 -- s = encode(sym "foo")
-s = encode({1,2,3})
+s = encode({'a','b','c', {'f', 'o'}}) -- works!
+
+bytes = {}
 
 for i=1,s:len() do
-	print(i, s:byte(i))
+	bytes[#bytes+1] = s:byte(i)
 end
+
+print("[ "..table.concat(bytes, ", ").." ]")
+
+
 
 
 
