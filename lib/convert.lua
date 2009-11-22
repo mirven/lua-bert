@@ -6,7 +6,7 @@ local function convert_hash(o)
 	local tuples = {}
 
 	for k,v in pairs(o) do
-		tuples[#tuples+1] = t { k, v }
+		tuples[#tuples+1] = t { convert(k), convert(v) }
 	end
 
 	return t { sym("bert"), sym("dict"), tuples }
@@ -54,59 +54,3 @@ function encode(o)
 	e:write_any(complex)
 	return e:str()
 end
-
--- (function()
--- 	local arr = convert(nil)
--- 	assert(is_tuple(arr))
--- 	assert(#arr == 2)
--- 	assert(arr[1] == sym("bert"))
--- 	assert(arr[2] == sym("nil"))
--- end)();
--- 
--- (function()
--- 	local arr = convert(true)
--- 	assert(is_tuple(arr))
--- 	assert(#arr == 2)
--- 	assert(arr[1] == sym("bert"))
--- 	assert(arr[2] == sym("true"))
--- end)();
--- 
--- (function()
--- 	local arr = convert(false)
--- 	assert(is_tuple(arr))
--- 	assert(#arr == 2)
--- 	assert(arr[1] == sym("bert"))
--- 	assert(arr[2] == sym("false"))
--- end)();
--- 
--- (function()
--- 	local arr = convert { foo = "bar" }
--- 	assert(type(arr) == "table")
--- 	assert(type(arr[3]) == "table")
--- 	assert(type(arr[3][1]) == "table")
--- end)();
-
--- print(encode(1))
--- print(encode("foo"))
-
--- s = encode("foo")
--- -- s = encode(sym "foo")  --  BERT::Encoder::encode(:foo).unpack 'C*'
--- -- s = encode({'a','b','c', {'f', 'o'}}) -- works! -- BERT::Encoder::encode(['a', 'b', 'c', [ 'f', 'o' ]]).unpack 'C*'
--- 
--- -- s = encode(t { 'a', 'b', 'c' })  --  BERT::Encoder::encode(t[ 'a', 'b', 'c' ]).unpack 'C*'
--- 
--- -- s = encode({ key1 = "value1" })  -- BERT::Encoder::encode({ :key1 => "value1" }).unpack 'C*'
--- 
--- bytes = {}
--- 
--- for i=1,s:len() do
--- 	bytes[#bytes+1] = s:byte(i)
--- end
--- 
--- print("[ "..table.concat(bytes, ", ").." ]")
--- 
--- 
--- 
--- 
--- 
--- 
