@@ -3,7 +3,15 @@ local Types = require 'bert.types'
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'
 
-module('bert.encode', package.seeall)
+local string = string
+local setmetatable = setmetatable
+local error = error
+local table = table
+local type = type
+local ipairs = ipairs
+local unpack = unpack
+
+module('bert.encode')
 
 Encode = {}
 Encode.__index = Encode
@@ -126,36 +134,3 @@ function Encode:write_fixnum(num)
   --   write_bignum num
   end
 end
-
-
--- (function()
--- 	local e = Encode:new()
--- 	e:write_1(65)
--- 	assert(e:str() == "A")
--- end)();
--- 
--- (function()
--- 	local e = Encode:new()
--- 	e:write_1(65)
--- 	e:write_1(66)
--- 	e:write_1(67)
--- 	assert(e:str() == "ABC")
--- end)();
--- 
--- (function()
--- 	local e = Encode:new()
--- 	e:write_string("abc")
--- 	assert(e:str() == "abc")
--- end)();
--- 
--- (function()
--- 	local e = Encode:new()
--- 	e:write_symbol(sym("abc"))
--- 	-- print(e:str())
--- 	-- assert(e:str() == "abc")
--- end)();
--- 
--- -- local e = Encode:new()
--- -- e:write_1(Types.MAGIC)
--- -- print(e:str())
--- -- 
