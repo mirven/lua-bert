@@ -2,7 +2,13 @@ local Types = require 'bert.types'
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'
 
-module('bert.decode', package.seeall)
+local setmetatable = setmetatable
+local error = error
+local string = string
+local unpack = unpack
+
+
+module('bert.decode')
 
 Decoder = {}
 Decoder.__index = Decoder
@@ -150,7 +156,7 @@ function Decoder:read_tuple(length)
 	if tag == sym.s"bert" then
 		return self:read_complex_type()
 	else
-		local tuple = bert.tuple.t { tag }
+		local tuple = tuple.t { tag }
 		for i=2,length do
 			tuple[i] = self:read_any_raw()
 		end
