@@ -13,23 +13,23 @@ local unpack = unpack
 
 module('bert.encode')
 
-Encode = {}
-Encode.__index = Encode
+Encoder = {}
+Encoder.__index = Encoder
 
-function Encode:new()
+function Encoder:new()
 	return setmetatable({ out = {} }, self)
 end
 
-function Encode:str()
+function Encoder:str()
 	return string.char(unpack(self.out))
 end
 
-function Encode:write_any(obj)
+function Encoder:write_any(obj)
 	self:write_1(Types.MAGIC)
 	self:write_any_raw(obj)
 end
 
-function Encode:write_any_raw(obj)
+function Encoder:write_any_raw(obj)
 	local obj_type = type(obj)
 	if obj_type == "string" then
 		self:write_binary(obj)
@@ -48,11 +48,11 @@ function Encode:write_any_raw(obj)
 	end
 end
 
-function Encode:write_1(byte)
+function Encoder:write_1(byte)
 	self.out[#self.out+1] = byte
 end
 
-function Encode:write_2(short)
+function Encoder:write_2(short)
 	local bb = bits.to_bits(short) -- TODO rename variables
 	local b = bits.bytes(2, bb)
 	for i=1,2 do
@@ -60,7 +60,7 @@ function Encode:write_2(short)
 	end
 end
 
-function Encode:write_4(long)
+function Encoder:write_4(long)
 	local bb = bits.to_bits(long) -- TODO rename variables
 	local b = bits.bytes(4, bb)
 	for i=1,4 do
@@ -68,28 +68,28 @@ function Encode:write_4(long)
 	end
 end
 
-function Encode:write_float(float)
+function Encoder:write_float(float)
 end
 
-function Encode:write_boolean(bool)
+function Encoder:write_boolean(bool)
 	error "not tested"
 	self:write_symbol(sym.s(tostring(bool)))
 end
 
-function Encode:write_symbol(sym)
+function Encoder:write_symbol(sym)
 	self:write_1(Types.ATOM)
 	self:write_2(sym.name:len())
 	self:write_string(sym.name)
 end
 
-function Encode:write_string(str)
+function Encoder:write_string(str)
 	local bytes = { str:byte(1, str:len()) }
 	for _, b in ipairs(bytes) do
 		table.insert(self.out, b)
 	end
 end
 
-function Encode:write_tuple(data)
+function Encoder:write_tuple(data)
 	if #data < 256 then
 		self:write_1(Types.SMALL_TUPLE)
 		self:write_1(#data)
@@ -103,7 +103,7 @@ function Encode:write_tuple(data)
 	end
 end
 
-function Encode:write_list(data)
+function Encoder:write_list(data)
 	if #data == 0 then
 		self:write_1(Types.NIL)
 	else
@@ -116,13 +116,13 @@ function Encode:write_list(data)
 	end
 end
 
-function Encode:write_binary(data)
+function Encoder:write_binary(data)
 	self:write_1(Types.BIN)
 	self:write_4(data:len())
 	self:write_string(data)
 end
 
-function Encode:write_fixnum(num)
+function Encoder:write_fixnum(num)
   if num >= 0 and num < 256 then
     self:write_1(Types.SMALL_INT)
     self:write_1(num)

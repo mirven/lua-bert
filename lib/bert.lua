@@ -19,9 +19,9 @@ module('bert')
 
 function encode(o)
 	local complex = c.convert(o)
-	local e = e.Encode:new()
-	e:write_any(complex)
-	return e:str()
+	local encoder = e.Encoder:new()
+	encoder:write_any(complex)
+	return encoder:str()
 end
 
 -- takes either a string of bytes or an array of tyes
