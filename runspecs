@@ -6,5 +6,7 @@ require 'bits_spec'
 require 'sym_spec'
 require 'tuple_spec'
 require 'encoder_spec'
+require 'decode_spec'
 
 spec:report(true)
+
