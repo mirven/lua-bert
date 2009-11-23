@@ -1,4 +1,7 @@
-module('bert.bits', package.seeall)
+local math = match
+local table = table
+
+module('bert.bits')
 
 local function check_int(n)
 	-- checking not float
@@ -46,12 +49,3 @@ function bytes(num, bits)
 	end
 	return bytes
 end
-
-
-
-(function()
-	for i=1,255 do
-		local bits = to_bits(i)
-		assert(i == byte(1, bits))
-	end
-end)();
