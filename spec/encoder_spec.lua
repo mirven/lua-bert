@@ -21,11 +21,11 @@ describe["bert encoding"] = function()
 	end
 	
 	it["should encode symbols"] = function()
-		expect(bert.sym.s"foo").should_encode_to { 131, 100, 0, 3, 102, 111, 111 }
+		expect(s"foo").should_encode_to { 131, 100, 0, 3, 102, 111, 111 }
 	end
 	
 	it["should encode tuples"] = function()
-		expect(bert.tuple.t { 'a', 'b', 'c' }).should_encode_to { 131, 104, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99 }
+		expect(t{ 'a', 'b', 'c' }).should_encode_to { 131, 104, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99 }
 	end
 
 	it["should encode arrays"] = function()

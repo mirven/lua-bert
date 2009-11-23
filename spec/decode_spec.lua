@@ -104,7 +104,7 @@ describe["bert decoding"] = function()
 			end
 		
 			it["should return the encoded symbol"] = function()
-				expect(sym).should_be(bert.sym.s"foo")
+				expect(sym).should_be(s"foo")
 			end
 		end
 		

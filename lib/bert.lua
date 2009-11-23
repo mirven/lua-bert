@@ -1,12 +1,21 @@
--- todo:
--- function s(name) return Symbol:new(name) end
--- function t(array) return Tuple:new(array) end
-
-module('bert', package.seeall)
-
 local e = require 'bert.encode'
 local d = require 'bert.decode'
 local c = require 'bert.convert'
+local sym = require 'bert.sym'
+local tuple = require 'bert.tuple'
+
+local string = string
+local type = type
+local unpack = unpack
+
+-- Create symbols by s"foo"
+s = sym.s
+
+-- Create tuples by t{ 1, 2, 3 }
+t = tuple.t
+
+module('bert')
+
 
 function encode(o)
 	local complex = c.convert(o)
