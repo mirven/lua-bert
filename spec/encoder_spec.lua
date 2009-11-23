@@ -63,7 +63,6 @@ describe["bert encoding"] = function()
 	it["should encode false"] = function()
 		expect(false).should_encode_to { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 5, 102, 97, 108, 115, 101 }
 	end
-	
 
 	it["should encode tables used as hashes"] = function()
 		expect({ key1 = "value1" }).should_encode_to { 131, 104, 3, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 100, 105, 99, 116, 108, 0, 0, 0, 1, 104, 2, 109, 0, 0, 0, 4, 107, 101, 121, 49, 109, 0, 0, 0, 6, 118, 97, 108, 117, 101, 49, 106 }
