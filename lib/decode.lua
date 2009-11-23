@@ -92,7 +92,6 @@ function Decoder:read_small_int()
 	return self:read_1()
 end
 
-
 function Decoder:read_bin()
 	if self:read_1() ~= Types.BIN then error("Invalid Type, not an erlang binary") end
   local length = self:read_4()
@@ -121,7 +120,6 @@ function Decoder:read_dict()
 	end
 	return hash	
 end
-
 
 function Decoder:read_complex_type(arity)
 	local item = self:read_any_raw()
