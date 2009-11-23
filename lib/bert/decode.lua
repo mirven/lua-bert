@@ -2,7 +2,7 @@ local Types = require 'bert.types'
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'
 
-module('bert', package.seeall)
+module('bert.decode', package.seeall)
 
 Decoder = {}
 Decoder.__index = Decoder

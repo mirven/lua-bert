@@ -14,3 +14,12 @@ function encode(o)
 	e:write_any(complex)
 	return e:str()
 end
+
+-- takes either a string of bytes or an array of tyes
+function decode(input)
+	if type(input) == "table" then
+		input = string.char(unpack(input))
+	end
+	local decoder = d.Decoder:new(input)
+	return decoder:read_any()
+end
