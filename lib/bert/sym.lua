@@ -1,7 +1,7 @@
 local setmetatable = setmetatable
 local getmetatable = getmetatable
 
-module('bert.sym', package.seeall)
+module('bert.sym')
 
 local Symbols = {}
 
