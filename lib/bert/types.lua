@@ -1,4 +1,4 @@
-module('bert.types', package.seeall)
+module('bert.types')
 
 SMALL_INT = 97
 INT = 98
