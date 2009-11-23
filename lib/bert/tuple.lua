@@ -1,4 +1,8 @@
-module('bert.tuple', package.seeall)
+local setmetatable = setmetatable
+local getmetatable = getmetatable
+local type = type
+
+module('bert.tuple')
 
 local Tuple = {}
 
