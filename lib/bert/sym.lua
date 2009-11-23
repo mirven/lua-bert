@@ -1,3 +1,5 @@
+module('bert', package.seeall)
+
 local Symbols = {}
 
 

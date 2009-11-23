@@ -1,6 +1,8 @@
-require 'types'
-require 'sym'
-require 'tuple'
+module('bert', package.seeall)
+
+require 'bert.types'
+require 'bert.sym'
+require 'bert.tuple'
 
 Decoder = {}
 Decoder.__index = Decoder

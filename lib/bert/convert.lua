@@ -1,6 +1,8 @@
-require 'sym'
-require 'tuple'
-require 'encode'
+module('bert', package.seeall)
+
+require 'bert.sym'
+require 'bert.tuple'
+require 'bert.encode'
 
 local function convert_hash(o)
 	local tuples = {}

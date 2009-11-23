@@ -1,7 +1,9 @@
-require 'types'
-require 'sym'
-require 'tuple'
-require 'bits'
+module('bert', package.seeall)
+
+require 'bert.types'
+require 'bert.sym'
+require 'bert.tuple'
+require 'bert.bits'
 
 Encode = {}
 Encode.__index = Encode

@@ -1,3 +1,5 @@
+module('bert', package.seeall)
+
 Types = {	
 	SMALL_INT = 97,
 	INT = 98,

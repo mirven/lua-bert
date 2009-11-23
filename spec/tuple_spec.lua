@@ -1,13 +1,12 @@
 require 'luaspec'
-
-require 'tuple'
+require 'bert.tuple'
 
 describe["tuples"] = function()
 	before = function()
-		tuple = t { 1,2,3 }
+		tuple = bert.t { 1,2,3 }
 	end
 	
 	it["should be able to check that it is a tuple"] = function()
-		expect(is_tuple(tuple)).should_be(true)
+		expect(bert.is_tuple(tuple)).should_be(true)
 	end
 end

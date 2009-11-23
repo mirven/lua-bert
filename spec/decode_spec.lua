@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'decode'
+require 'bert.decode'
 
 matchers.should_fail = matchers.should_error
 
@@ -10,7 +10,7 @@ end
 describe["bert decoding"] = function()
 	describe["peeking"] = function()
 		before = function()
-			decoder = Decoder:new("ABCDEF")  -- 65,66,67,68,69
+			decoder = bert.Decoder:new("ABCDEF")  -- 65,66,67,68,69
 		end
 		
 		it["should return the correct number of bytes"] = function()
@@ -56,7 +56,7 @@ describe["bert decoding"] = function()
 	
 	describe["reading"] = function()
 		before = function()
-			decoder = Decoder:new("ABCDEF")  -- 65,66,67,68,69
+			decoder = bert.Decoder:new("ABCDEF")  -- 65,66,67,68,69
 		end
 	
 		it["should return the correct number of bytes"] = function()
@@ -89,13 +89,13 @@ describe["bert decoding"] = function()
 	
 	describe["decoding"] = function()
 		it["should fail if the first byte is not the proper magic"] = function()
-			decoder = Decoder:new("ABCDEF")  -- 65,66,67,68,69
+			decoder = bert.Decoder:new("ABCDEF")  -- 65,66,67,68,69
 			expect(function() decoder:read_any() end).should_fail()
 		end		
 		
 		describe["decoding strings"] = function()
 			before = function()
-				decoder = Decoder:new(bytes_to_string { 131, 109, 0, 0, 0, 3, 102, 111, 111 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 109, 0, 0, 0, 3, 102, 111, 111 })
 			end
 			
 			it["should return the encoded string"] = function()
@@ -105,22 +105,22 @@ describe["bert decoding"] = function()
 		
 		describe["decoding symbols"] = function()
 			before = function()
-				decoder = Decoder:new(bytes_to_string { 131, 100, 0, 3, 102, 111, 111 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 100, 0, 3, 102, 111, 111 })
 			end
 		
 			it["should return the encoded symbol"] = function()
-				expect(decoder:read_any()).should_be(sym "foo")
+				expect(decoder:read_any()).should_be(bert.sym "foo")
 			end
 		end
 		
 		describe["decoding tuples"] = function()
 			before = function()
-				decoder = Decoder:new(bytes_to_string { 131, 104, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 104, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99 })
 			end
 			
 			it["should return encoded tuple"] = function()
 				local tuple = decoder:read_any()
-				expect(is_tuple(tuple)).should_be(true)
+				expect(bert.is_tuple(tuple)).should_be(true)
 				expect(#tuple).should_be(3)
 				expect(tuple[1]).should_be('a')
 				expect(tuple[2]).should_be('b')
@@ -130,7 +130,7 @@ describe["bert decoding"] = function()
 		
 		describe["decoding arrays"] = function()
 			before = function()
-			 	decoder = Decoder:new(bytes_to_string { 131, 108, 0, 0, 0, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99, 106 })			
+			 	decoder = bert.Decoder:new(bytes_to_string { 131, 108, 0, 0, 0, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99, 106 })			
 			end
 			
 			it["should return encoded array"] = function()
@@ -144,7 +144,7 @@ describe["bert decoding"] = function()
 		
 		describe["decoding nested arrays"] = function()
 			before = function()
-				decoder = Decoder:new(bytes_to_string { 131, 108, 0, 0, 0, 4, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99, 108, 0, 0, 0, 2, 109, 0, 0, 0, 1, 102, 109, 0, 0, 0, 1, 111, 106, 106 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 108, 0, 0, 0, 4, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99, 108, 0, 0, 0, 2, 109, 0, 0, 0, 1, 102, 109, 0, 0, 0, 1, 111, 106, 106 })
 			end
 			
 			it["should return encoded array"] = function()
@@ -160,7 +160,7 @@ describe["bert decoding"] = function()
 		
 		describe["decoding integers"] = function()
 			it["should decode 0"] = function()
-				decoder = Decoder:new(bytes_to_string { 131, 97, 0 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 97, 0 })
 				number = decoder:read_any()
 				expect(number).should_be(0)
 			end
@@ -168,23 +168,23 @@ describe["bert decoding"] = function()
 		
 		describe["decoding complex objects"] = function()
 			it["should decode nil"] = function()
-				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 3, 110, 105, 108 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 3, 110, 105, 108 })
 				expect(decoder:read_any()).should_be(nil)
 			end
 			
 			it["should decode true"] = function()
-				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 116, 114, 117, 101 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 116, 114, 117, 101 })
 				expect(decoder:read_any()).should_be(true)
 			end
 			
 			it["should decode false"] = function()
-				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 5, 102, 97, 108, 115, 101 })
+				decoder = bert.Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 5, 102, 97, 108, 115, 101 })
 				expect(decoder:read_any()).should_be(false)
 			end
 			
 			describe["decoding hashes"] = function()
 				it["should decode"] = function()
-					decoder = Decoder:new(bytes_to_string { 131, 104, 3, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 100, 105, 99, 116, 108, 0, 0, 0, 1, 104, 2, 109, 0, 0, 0, 4, 107, 101, 121, 49, 109, 0, 0, 0, 6, 118, 97, 108, 117, 101, 49, 106 })
+					decoder = bert.Decoder:new(bytes_to_string { 131, 104, 3, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 100, 105, 99, 116, 108, 0, 0, 0, 1, 104, 2, 109, 0, 0, 0, 4, 107, 101, 121, 49, 109, 0, 0, 0, 6, 118, 97, 108, 117, 101, 49, 106 })
 					hash = decoder:read_any()
 					expect(hash.key1).should_be("value1")
 				end

@@ -1,3 +1,5 @@
+module('bert', package.seeall)
+
 local function check_int(n)
 	-- checking not float
 	if n - math.floor(n) > 0 then

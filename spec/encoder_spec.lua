@@ -1,8 +1,8 @@
 require 'luaspec'
-require 'convert'
+require 'bert.convert'
 
 function matchers.should_encode_to(value, expected)
-	local encoded_value = encode(value)
+	local encoded_value = bert.encode(value)
 	local expected_string = string.char(unpack(expected))
 	if encoded_value ~= expected_string then
 		return false, "expecting "..tostring(expected)..", not ".. tostring(value)
@@ -21,11 +21,11 @@ describe["bert encoding"] = function()
 	end
 	
 	it["should encode symbols"] = function()
-		expect(sym "foo").should_encode_to { 131, 100, 0, 3, 102, 111, 111 }
+		expect(bert.sym "foo").should_encode_to { 131, 100, 0, 3, 102, 111, 111 }
 	end
 	
 	it["should encode tuples"] = function()
-		expect(t { 'a', 'b', 'c' }).should_encode_to { 131, 104, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99 }
+		expect(bert.t { 'a', 'b', 'c' }).should_encode_to { 131, 104, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99 }
 	end
 
 	it["should encode arrays"] = function()
