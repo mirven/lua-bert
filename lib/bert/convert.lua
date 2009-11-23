@@ -15,7 +15,7 @@ local function convert_hash(o)
 		tuples[#tuples+1] = tuple.t { convert(k), convert(v) }
 	end
 
-	return tuple.t { sym.s("bert"), sym.s("dict"), tuples }
+	return tuple.t { sym.s"bert", sym.s"dict", tuples }
 end
 
 local function convert_tuple(o)
@@ -37,7 +37,7 @@ end
 
 function convert(o)
 	if o == nil then
-		return tuple.t { sym.s("bert"), sym.s("nil") }
+		return tuple.t { sym.s"bert", sym.s"nil" }
 	elseif type(o) == 'boolean' then
 		return tuple.t { sym.s"bert", sym.s(tostring(o)) }
 	elseif tuple.is_tuple(o) then
