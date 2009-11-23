@@ -109,7 +109,7 @@ describe["bert decoding"] = function()
 			end
 		
 			it["should return the encoded symbol"] = function()
-				expect(decoder:read_any()).should_be(bert.sym "foo")
+				expect(decoder:read_any()).should_be(bert.sym.sym "foo")
 			end
 		end
 		
@@ -120,7 +120,7 @@ describe["bert decoding"] = function()
 			
 			it["should return encoded tuple"] = function()
 				local tuple = decoder:read_any()
-				expect(bert.is_tuple(tuple)).should_be(true)
+				expect(bert.tuple.is_tuple(tuple)).should_be(true)
 				expect(#tuple).should_be(3)
 				expect(tuple[1]).should_be('a')
 				expect(tuple[2]).should_be('b')

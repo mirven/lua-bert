@@ -1,9 +1,11 @@
+local bits = require 'bert.bits'
+
 module('bert', package.seeall)
 
 require 'bert.types'
 require 'bert.sym'
 require 'bert.tuple'
-require 'bert.bits'
+
 
 Encode = {}
 Encode.__index = Encode
@@ -25,15 +27,16 @@ function Encode:write_any_raw(obj)
 	local obj_type = type(obj)
 	if obj_type == "string" then
 		self:write_binary(obj)
-	elseif is_tuple(obj) then
+	elseif tuple.is_tuple(obj) then
 		self:write_tuple(obj)
-	elseif is_symbol(obj) then
+	elseif sym.is_symbol(obj) then
 		self:write_symbol(obj)
 	elseif obj_type == "table" then
 		if obj[1] then
 			self:write_list(obj)		
 		else			
-		end
+			error "should not happen"
+		end		
 	elseif obj_type == "number" then
 		self:write_fixnum(obj)
 	end
@@ -44,16 +47,16 @@ function Encode:write_1(byte)
 end
 
 function Encode:write_2(short)
-	local bits = to_bits(short)
-	local b = bytes(2, bits)
+	local bb = bits.to_bits(short) -- TODO rename variables
+	local b = bits.bytes(2, bb)
 	for i=1,2 do
 		self:write_1(b[i])
 	end
 end
 
 function Encode:write_4(long)
-	local bits = to_bits(long)
-	local b = bytes(4, bits)
+	local bb = bits.to_bits(long) -- TODO rename variables
+	local b = bits.bytes(4, bb)
 	for i=1,4 do
 		self:write_1(b[i])
 	end

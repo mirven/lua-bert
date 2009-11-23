@@ -1,4 +1,4 @@
-module('bert', package.seeall)
+module('bert.tuple', package.seeall)
 
 local Tuple = {}
 

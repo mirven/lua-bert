@@ -1,4 +1,4 @@
-module('bert', package.seeall)
+module('bert.sym', package.seeall)
 
 local Symbols = {}
 

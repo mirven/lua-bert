@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'bert.bits'
+local bits = require 'bert.bits'
 
 -- function is_equal(v1, v2)
 -- 	if type(v1) ~= type(v2) then
@@ -32,7 +32,7 @@ function matchers.should_have_bits(value, expected)
 		return true
 	end
 	
-	if not arrays_equal(bert.to_bits(value), expected) then
+	if not arrays_equal(bits.to_bits(value), expected) then
 		return false, "expecting "..tostring(expected)..", not ".. tostring(value)
 	else
 		return true
@@ -54,21 +54,21 @@ end
 describe["extracting a byte from an integer"] = function()
 	it["should"] = function()
 		for i=1,255 do
-			expect(bert.byte(1,bert.to_bits(i))).should_be(i)
+			expect(bits.byte(1,bits.to_bits(i))).should_be(i)
 		end
 	end
 	
 	it["should not"] = function()
-		expect(bert.byte(1, bert.to_bits(256))).should_be(0)
-		expect(bert.byte(1, bert.to_bits(257))).should_be(1)
-		expect(bert.byte(1, bert.to_bits(258))).should_be(2)
-		expect(bert.byte(2, bert.to_bits(256))).should_be(1)
+		expect(bits.byte(1, bits.to_bits(256))).should_be(0)
+		expect(bits.byte(1, bits.to_bits(257))).should_be(1)
+		expect(bits.byte(1, bits.to_bits(258))).should_be(2)
+		expect(bits.byte(2, bits.to_bits(256))).should_be(1)
 	end
 end
 
 describe["extracing all bytes from an integer"] = function()
 	it["should"] = function()
-		bb = bert.bytes(2, bert.to_bits(256))
+		bb = bits.bytes(2, bits.to_bits(256))
 		expect(#bb).should_be(2)
 		expect(bb[1]).should_be(1)
 		expect(bb[2]).should_be(0)

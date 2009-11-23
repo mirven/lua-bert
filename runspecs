@@ -2,6 +2,8 @@
 
 package.path = package.path..";lib/?.lua;spec/?.lua"
 
+-- require 'bert'
+
 require 'bits_spec'
 require 'sym_spec'
 require 'tuple_spec'

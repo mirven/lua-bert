@@ -1,4 +1,4 @@
-module('bert', package.seeall)
+module('bert.bits', package.seeall)
 
 local function check_int(n)
 	-- checking not float
