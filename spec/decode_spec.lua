@@ -128,7 +128,7 @@ describe["bert decoding"] = function()
 			end
 		end
 		
-		describe["decoding array"] = function()
+		describe["decoding arrays"] = function()
 			before = function()
 			 	decoder = Decoder:new(bytes_to_string { 131, 108, 0, 0, 0, 3, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99, 106 })			
 			end
@@ -142,7 +142,7 @@ describe["bert decoding"] = function()
 			end			
 		end
 		
-		describe["nexted array"] = function()
+		describe["decoding nested arrays"] = function()
 			before = function()
 				decoder = Decoder:new(bytes_to_string { 131, 108, 0, 0, 0, 4, 109, 0, 0, 0, 1, 97, 109, 0, 0, 0, 1, 98, 109, 0, 0, 0, 1, 99, 108, 0, 0, 0, 2, 109, 0, 0, 0, 1, 102, 109, 0, 0, 0, 1, 111, 106, 106 })
 			end
@@ -156,6 +156,31 @@ describe["bert decoding"] = function()
 				expect(tuple[4][1]).should_be('f')
 				expect(tuple[4][2]).should_be('o')
 			end			
+		end
+		
+		describe["decoding integers"] = function()
+			it["should decode 0"] = function()
+				decoder = Decoder:new(bytes_to_string { 131, 97, 0 })
+				number = decoder:read_any()
+				expect(number).should_be(0)
+			end
+		end
+		
+		describe["decoding complex objects"] = function()
+			it["should decode nil"] = function()
+				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 3, 110, 105, 108 })
+				expect(decoder:read_any()).should_be(nil)
+			end
+			
+			it["should decode true"] = function()
+				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 116, 114, 117, 101 })
+				expect(decoder:read_any()).should_be(true)
+			end
+			
+			it["should decode false"] = function()
+				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 5, 102, 97, 108, 115, 101 })
+				expect(decoder:read_any()).should_be(false)
+			end
 		end
 	end
 	
