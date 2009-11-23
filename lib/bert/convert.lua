@@ -1,8 +1,12 @@
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'
 
-module('bert.convert', package.seeall)
+local type = type
+local ipairs = ipairs
+local pairs = pairs
+local tostring = tostring
 
+module('bert.convert')
 
 local function convert_hash(o)
 	local tuples = {}
