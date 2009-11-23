@@ -1,11 +1,9 @@
 local bits = require 'bert.bits'
+local Types = require 'bert.types'
+local sym = require 'bert.sym'
+local tuple = require 'bert.tuple'
 
-module('bert', package.seeall)
-
-require 'bert.types'
-require 'bert.sym'
-require 'bert.tuple'
-
+module('bert.encode', package.seeall)
 
 Encode = {}
 Encode.__index = Encode
@@ -66,7 +64,8 @@ function Encode:write_float(float)
 end
 
 function Encode:write_boolean(bool)
-	self:write_symbol(sym(tostring(bool)))
+	error "not tested"
+	self:write_symbol(sym.s(tostring(bool)))
 end
 
 function Encode:write_symbol(sym)

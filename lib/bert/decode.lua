@@ -1,8 +1,8 @@
-module('bert', package.seeall)
+local Types = require 'bert.types'
+local sym = require 'bert.sym'
+local tuple = require 'bert.tuple'
 
-require 'bert.types'
-require 'bert.sym'
-require 'bert.tuple'
+module('bert', package.seeall)
 
 Decoder = {}
 Decoder.__index = Decoder
@@ -86,7 +86,7 @@ function Decoder:read_atom()
 	if self:read_1() ~= Types.ATOM then error("Invalid Type, not an atom") end
 	local length = self:read_2()
 	local name = self:read_string(length)
-	return sym.sym(name)
+	return sym.s(name)
 end
 
 function Decoder:read_small_int()
@@ -125,18 +125,18 @@ end
 
 function Decoder:read_complex_type(arity)
 	local item = self:read_any_raw()
-	if item == sym.sym "nil" then
+	if item == sym.s"nil" then
 		return nil
-	elseif item == sym.sym "true" then
+	elseif item == sym.s"true" then
 		return true
-	elseif item == sym.sym "false" then
+	elseif item == sym.s"false" then
 		return false
-	elseif item == sym.sym "time" then
+	elseif item == sym.s"time" then
   	-- Time.at(read_any_raw * 1_000_000 + read_any_raw, read_any_raw)
 		error "Not Yet Implemented"
-	elseif item == sym.sym "regex" then
+	elseif item == sym.s"regex" then
 		error "Not Yet Implemented"
-	elseif item == sym.sym "dict" then
+	elseif item == sym.s"dict" then
 		return self:read_dict()
 	else
 		return nil
@@ -147,7 +147,7 @@ function Decoder:read_tuple(length)
 	if length == 0 then return t {} end
 	
 	local tag = self:read_any_raw()
-	if tag == sym.sym "bert" then
+	if tag == sym.s"bert" then
 		return self:read_complex_type()
 	else
 		local tuple = bert.tuple.t { tag }

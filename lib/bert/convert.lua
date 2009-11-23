@@ -1,8 +1,8 @@
-module('bert', package.seeall)
+local sym = require 'bert.sym'
+local tuple = require 'bert.tuple'
 
-require 'bert.sym'
-require 'bert.tuple'
-require 'bert.encode'
+module('bert.convert', package.seeall)
+
 
 local function convert_hash(o)
 	local tuples = {}
@@ -11,7 +11,7 @@ local function convert_hash(o)
 		tuples[#tuples+1] = tuple.t { convert(k), convert(v) }
 	end
 
-	return tuple.t { sym.sym("bert"), sym.sym("dict"), tuples }
+	return tuple.t { sym.s("bert"), sym.s("dict"), tuples }
 end
 
 local function convert_tuple(o)
@@ -33,9 +33,9 @@ end
 
 function convert(o)
 	if o == nil then
-		return tuple.t { sym.sym("bert"), sym.sym("nil") }
+		return tuple.t { sym.s("bert"), sym.s("nil") }
 	elseif type(o) == 'boolean' then
-		return tuple.t { sym.s.bert, sym.s[tostring(o)] }
+		return tuple.t { sym.s"bert", sym.s(tostring(o)) }
 	elseif tuple.is_tuple(o) then
 		return convert_tuple(o)
 	elseif type(o) == "table" and not sym.is_symbol(o) then

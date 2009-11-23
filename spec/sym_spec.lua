@@ -3,20 +3,20 @@ local sym = require 'bert.sym'
 
 describe["symbols"] = function()
 	it["should create the same symbol from the same string"] = function()
-		expect(sym.sym("foo")).should_be(sym.sym("foo"))
+		expect(sym.s"foo").should_be(sym.s"foo")
 	end
 
 	it["should create different symbols from different strings"] = function()
-		expect(sym.sym("foo")).should_not_be(sym.sym("bar"))
+		expect(sym.s"foo").should_not_be(sym.s"bar")
 	end
 	
 	it["should be able to provide it's name"] = function()
-		expect(sym.sym("foo").name).should_be("foo")
+		expect(sym.s"foo".name).should_be("foo")
 	end
 	
 	describe["checking to see if an object is a symbol"] = function()
 		it["should return true when passed a symbol"] = function()
-			expect(sym.is_symbol(sym.sym("foo"))).should_be(true)
+			expect(sym.is_symbol(sym.s("foo"))).should_be(true)
 		end
 		
 		it["should return false when passed anything else"] = function()

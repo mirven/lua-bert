@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'bert.decode'
+require 'bert'
 
 matchers.should_fail = matchers.should_error
 
@@ -109,7 +109,7 @@ describe["bert decoding"] = function()
 			end
 		
 			it["should return the encoded symbol"] = function()
-				expect(decoder:read_any()).should_be(bert.sym.sym "foo")
+				expect(decoder:read_any()).should_be(bert.sym.s"foo")
 			end
 		end
 		
