@@ -1,4 +1,4 @@
-local math = match
+local math = math
 local table = table
 
 module('bert.bits')
