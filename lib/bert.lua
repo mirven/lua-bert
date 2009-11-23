@@ -1,5 +1,5 @@
-local e = require 'bert.encode'
-local d = require 'bert.decode'
+local e = require 'bert.encoder'
+local d = require 'bert.decoder'
 local c = require 'bert.convert'
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'

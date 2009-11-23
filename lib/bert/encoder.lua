@@ -11,7 +11,7 @@ local type = type
 local ipairs = ipairs
 local unpack = unpack
 
-module('bert.encode')
+module('bert.encoder')
 
 Encoder = {}
 Encoder.__index = Encoder

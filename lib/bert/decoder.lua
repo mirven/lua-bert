@@ -8,7 +8,7 @@ local string = string
 local unpack = unpack
 
 
-module('bert.decode')
+module('bert.decoder')
 
 Decoder = {}
 Decoder.__index = Decoder

@@ -6,7 +6,7 @@ require 'bits_spec'
 require 'sym_spec'
 require 'tuple_spec'
 require 'encoder_spec'
-require 'decode_spec'
+require 'decoder_spec'
 require 'roundtrip_spec'
 
 spec:report()
