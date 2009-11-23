@@ -1,13 +1,6 @@
 require 'luaspec'
 require 'convert'
 
-local function assert_bytes(str, bytes)
-	assert(str:len() == #bytes)
-	for i=1,str:len() do
-		assert(str:byte(i) == bytes[i])
-	end
-end
-
 function matchers.should_encode_to(value, expected)
 	local encoded_value = encode(value)
 	local expected_string = string.char(unpack(expected))
