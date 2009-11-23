@@ -181,6 +181,14 @@ describe["bert decoding"] = function()
 				decoder = Decoder:new(bytes_to_string { 131, 104, 2, 100, 0, 4, 98, 101, 114, 116, 100, 0, 5, 102, 97, 108, 115, 101 })
 				expect(decoder:read_any()).should_be(false)
 			end
+			
+			describe["decoding hashes"] = function()
+				it["should decode"] = function()
+					decoder = Decoder:new(bytes_to_string { 131, 104, 3, 100, 0, 4, 98, 101, 114, 116, 100, 0, 4, 100, 105, 99, 116, 108, 0, 0, 0, 1, 104, 2, 109, 0, 0, 0, 4, 107, 101, 121, 49, 109, 0, 0, 0, 6, 118, 97, 108, 117, 101, 49, 106 })
+					hash = decoder:read_any()
+					expect(hash.key1).should_be("value1")
+				end
+			end
 		end
 	end
 	

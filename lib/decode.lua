@@ -101,7 +101,7 @@ end
 
 function Decoder:read_dict()
 	local type = self:read_1()
-	if type ~= Types.LIST or type ~= Types.NIL then error "Invalid dict spec, not an erlang list" end
+	if type ~= Types.LIST and type ~= Types.NIL then error "Invalid dict spec, not an erlang list" end
 	
 	local length
 	if type == Types.LIST then
@@ -114,7 +114,7 @@ function Decoder:read_dict()
 	
 	for i=1,length do
 		local pair = self:read_any_raw()
-		hash[pair[0]] = pair[1]
+		hash[pair[1]] = pair[2]
 	end
 	if type == Types.LIST then
 		self:read_1()
@@ -143,22 +143,18 @@ function Decoder:read_complex_type(arity)
 	end	
 end
 
-function Decoder:read_tuple(arity)
-	if arity > 0 then
-		local tag = self:read_any_raw()
-		if tag == sym "bert" then
-			return self:read_complex_type(arity)
-		else
-			local tuple = t {}
-			tuple[1] = tag
-			for i=1,arity-1 do
-				tuple[i+1] = self:read_any_raw()
-			end
-			return tuple
-		end
+function Decoder:read_tuple(length)
+	if length == 0 then return t {} end
+	
+	local tag = self:read_any_raw()
+	if tag == sym "bert" then
+		return self:read_complex_type()
 	else
-		error "Not Yet Implemented"
-		-- Tuple.new
+		local tuple = t { tag }
+		for i=2,length do
+			tuple[i] = self:read_any_raw()
+		end
+		return tuple
 	end
 end
 
