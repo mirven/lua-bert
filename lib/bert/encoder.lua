@@ -2,6 +2,7 @@ local bits = require 'bert.bits'
 local Types = require 'bert.types'
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'
+local bytes = require 'bert.bytes'
 
 local string = string
 local setmetatable = setmetatable
@@ -9,7 +10,6 @@ local error = error
 local table = table
 local type = type
 local ipairs = ipairs
-local unpack = unpack
 
 module('bert.encoder')
 
@@ -21,7 +21,7 @@ function Encoder:new()
 end
 
 function Encoder:str()
-	return string.char(unpack(self.out))
+	return bytes.to_string(self.out)
 end
 
 function Encoder:write_any(obj)
@@ -61,6 +61,10 @@ function Encoder:write_2(short)
 end
 
 function Encoder:write_4(long)
+	-- for _, b in ipairs(bytes.from_integer(long)) do
+	-- 	self:write_1(b)
+	-- end
+
 	local bb = bits.to_bits(long) -- TODO rename variables
 	local b = bits.bytes(4, bb)
 	for i=1,4 do
@@ -69,11 +73,7 @@ function Encoder:write_4(long)
 end
 
 function Encoder:write_float(float)
-end
-
-function Encoder:write_boolean(bool)
-	error "not tested"
-	self:write_symbol(sym.s(tostring(bool)))
+	error "not implemented"
 end
 
 function Encoder:write_symbol(sym)
@@ -83,8 +83,7 @@ function Encoder:write_symbol(sym)
 end
 
 function Encoder:write_string(str)
-	local bytes = { str:byte(1, str:len()) }
-	for _, b in ipairs(bytes) do
+	for _, b in ipairs(bytes.from_string(str)) do
 		table.insert(self.out, b)
 	end
 end

@@ -10,12 +10,41 @@ local function check_int(n)
 	end
 end
 
+
+local function tbl_to_number(tbl)
+ local n = table.getn(tbl)
+
+ local rslt = 0
+ local power = 1
+ for i = 1, n do
+  rslt = rslt + tbl[i]*power
+  power = power*2
+ end
+ 
+ return rslt
+end
+
+local function bit_not(n)
+ 
+ local tbl = to_bits(n)
+ local size = math.max(table.getn(tbl), 32)
+ for i = 1, size do
+  if(tbl[i] == 1) then 
+   tbl[i] = 0
+  else
+   tbl[i] = 1
+  end
+ end
+ return tbl_to_number(tbl)
+end
+
+
 function to_bits(n)
 	check_int(n)
-	-- if n < 0 then
-	-- 	-- negative
-	-- 	return to_bits(bit.bnot(math.abs(n)) + 1)
-	-- end
+	if n < 0 then
+		-- negative
+		return to_bits(bit_not(math.abs(n)) + 1)
+	end
 	-- to bits table
 	local bits = {}
 	while n > 0 do

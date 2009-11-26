@@ -1,4 +1,4 @@
-#!/bin/env lua
+#!/usr/bin/env lua -lluacov.tick -lluarocks.require
 
 package.path = package.path..";lib/?.lua;spec/?.lua"
 

@@ -155,6 +155,11 @@ describe["bert decoding"] = function()
 				number = bert.decode { 131, 97, 0 }
 				expect(number).should_be(0)
 			end
+			
+			-- it["should decode -1"] = function()
+			-- 	number = bert.decode { 131, 98, 255, 255, 255, 255 }
+			-- 	expect(number).should_be(-1)
+			-- end
 		end
 		
 		describe["decoding complex objects"] = function()
