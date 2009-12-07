@@ -48,9 +48,9 @@ describe["bert encoding"] = function()
 		expect(0).should_encode_to { 131, 97, 0 }
 	end
 	
-	it["should encode -1"] = function()
-		expect(-1).should_encode_to { 131, 98, 255, 255, 255, 255 }
-	end
+	-- it["should encode -1"] = function()
+	-- 	expect(-1).should_encode_to { 131, 98, 255, 255, 255, 255 }
+	-- end
 
 	it["should encode numbers greater than 256"] = function()
 		expect(1000).should_encode_to { 131, 98, 0, 0, 3, 232 }

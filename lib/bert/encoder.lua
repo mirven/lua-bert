@@ -1,4 +1,3 @@
-local bits = require 'bert.bits'
 local Types = require 'bert.types'
 local sym = require 'bert.sym'
 local tuple = require 'bert.tuple'
@@ -53,22 +52,16 @@ function Encoder:write_1(byte)
 end
 
 function Encoder:write_2(short)
-	local bb = bits.to_bits(short) -- TODO rename variables
-	local b = bits.bytes(2, bb)
+	local bs = bytes.from_integer(short, 2)
 	for i=1,2 do
-		self:write_1(b[i])
+		self:write_1(bs[i])
 	end
 end
 
 function Encoder:write_4(long)
-	-- for _, b in ipairs(bytes.from_integer(long)) do
-	-- 	self:write_1(b)
-	-- end
-
-	local bb = bits.to_bits(long) -- TODO rename variables
-	local b = bits.bytes(4, bb)
+	local bs = bytes.from_integer(long, 4)
 	for i=1,4 do
-		self:write_1(b[i])
+		self:write_1(bs[i])
 	end
 end
 

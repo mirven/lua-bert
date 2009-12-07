@@ -13,7 +13,7 @@ function to_integer(bytes)
 	return num
 end
 
-function from_integer(num)
+function from_integer(num, n)
 	local bytes = {}
 	
 	while num > 0 do
@@ -22,10 +22,18 @@ function from_integer(num)
 		num = (num - v) / 256
 	end
 	
-	for i=1,4-#bytes do
-		table.insert(bytes, 1, 0)
+	if n then
+		if n < #bytes then
+			for i=1,#bytes-n do
+				table.remove(bytes,1)
+			end
+		else
+			for i=1,n-#bytes do
+				table.insert(bytes, 1, 0)
+			end
+		end
 	end
-	
+		
 	return bytes
 end
 
