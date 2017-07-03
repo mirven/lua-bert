@@ -197,3 +197,7 @@ function Decoder:read_large_tuple()
 	local size = self:read_4()
 	return self:read_tuple(size)
 end
+
+function Decoder:read_nil()
+	return {}
+end
