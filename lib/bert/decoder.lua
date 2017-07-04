@@ -34,7 +34,7 @@ function Decoder:read_any_raw()
 	local next_byte = self:peek_1()
 	if next_byte == Types.ATOM then return self:read_atom()
 	elseif next_byte == Types.SMALL_INT then return self:read_small_int()
-	elseif next_byte == Types.INT then return self:read_int()  -- TODO
+	elseif next_byte == Types.INT then return self:read_int()
 	elseif next_byte == Types.SMALL_BIGNUM then return self:read_small_bignum()
 	elseif next_byte == Types.LAGE_BIGNUM then return self:read_large_bignum()
 	elseif next_byte == Types.FLOAT then return self:read_float()
@@ -45,7 +45,7 @@ function Decoder:read_any_raw()
 	elseif next_byte == Types.LIST then return self:read_list()
 	elseif next_byte == Types.BIN then return self:read_bin()
 	else
-		error("Unknown type: "..tostring(next_byte).." at "..tostring(self.current))
+		error("Unknown type: "..next_byte.." at "..self.current)
 	end
 end
 
@@ -98,12 +98,14 @@ end
 
 function Decoder:read_int()
 	if self:read_1() ~= Types.INT then error("Invalid Type, not an int") end
-  local value = self:read_4()
+	local value = self:read_4()
 	
-	error "Not Implemented"
-  -- negative = (value >> 31)[0] == 1
-  -- value = (value - (1 << 32)) if negative
-  -- value = Fixnum.induced_from(value)
+	-- Poor man's bitwise operators, to be compatible with Lua 5.1
+	if value >= 2 ^ 31 then
+		return value - 2 ^ 32
+	else
+		return value
+	end
 end
 
 function Decoder:read_small_int()
@@ -150,7 +152,8 @@ function Decoder:read_complex_type(arity)
 		return false
 	elseif item == sym.s"time" then
   	-- Time.at(read_any_raw * 1_000_000 + read_any_raw, read_any_raw)
-		error "Not Yet Implemented"
+		-- Let's return a tuple, as used in Erlang
+		return tuple.t { self:read_any_raw(), self:read_any_raw(), self:read_any_raw() }
 	elseif item == sym.s"regex" then
 		error "Not Yet Implemented"
 	elseif item == sym.s"dict" then
@@ -196,4 +199,8 @@ function Decoder:read_large_tuple()
 	if self:read_1() ~= Types.LARGE_TUPLE then error("Invalid Type, not a large tuple") end
 	local size = self:read_4()
 	return self:read_tuple(size)
+end
+
+function Decoder:read_nil()
+	return {}
 end
