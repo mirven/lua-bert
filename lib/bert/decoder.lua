@@ -150,7 +150,8 @@ function Decoder:read_complex_type(arity)
 		return false
 	elseif item == sym.s"time" then
   	-- Time.at(read_any_raw * 1_000_000 + read_any_raw, read_any_raw)
-		error "Not Yet Implemented"
+		-- Let's return a tuple, as used in Erlang
+		return tuple.t { self:read_any_raw(), self:read_any_raw(), self:read_any_raw() }
 	elseif item == sym.s"regex" then
 		error "Not Yet Implemented"
 	elseif item == sym.s"dict" then
