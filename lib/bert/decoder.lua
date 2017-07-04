@@ -45,7 +45,7 @@ function Decoder:read_any_raw()
 	elseif next_byte == Types.LIST then return self:read_list()
 	elseif next_byte == Types.BIN then return self:read_bin()
 	else
-		error("Unknown type: "..tostring(next_byte).." at "..tostring(self.current))
+		error("Unknown type: "..next_byte.." at "..self.current)
 	end
 end
 
