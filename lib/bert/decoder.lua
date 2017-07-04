@@ -34,7 +34,7 @@ function Decoder:read_any_raw()
 	local next_byte = self:peek_1()
 	if next_byte == Types.ATOM then return self:read_atom()
 	elseif next_byte == Types.SMALL_INT then return self:read_small_int()
-	elseif next_byte == Types.INT then return self:read_int()  -- TODO
+	elseif next_byte == Types.INT then return self:read_int()
 	elseif next_byte == Types.SMALL_BIGNUM then return self:read_small_bignum()
 	elseif next_byte == Types.LAGE_BIGNUM then return self:read_large_bignum()
 	elseif next_byte == Types.FLOAT then return self:read_float()
@@ -98,12 +98,14 @@ end
 
 function Decoder:read_int()
 	if self:read_1() ~= Types.INT then error("Invalid Type, not an int") end
-  local value = self:read_4()
+	local value = self:read_4()
 	
-	error "Not Implemented"
-  -- negative = (value >> 31)[0] == 1
-  -- value = (value - (1 << 32)) if negative
-  -- value = Fixnum.induced_from(value)
+	-- Poor man's bitwise operators, to be compatible with Lua 5.1
+	if value >= 2 ^ 31 then
+		return value - 2 ^ 32
+	else
+		return value
+	end
 end
 
 function Decoder:read_small_int()
